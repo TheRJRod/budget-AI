@@ -24,11 +24,14 @@ const Expenses = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    API.post("/expenses").then((res) => setExpenses([...expenses, res.data]));
+    API.post("/expenses", form).then((res) =>
+      setExpenses([...expenses, res.data])
+    );
   };
 
   return (
     <>
+      <h2>Expense Sources</h2>
       <form onSubmit={handleSubmit}>
         <input onChange={handleChange} name="title" />
         <input onChange={handleChange} name="total" />
@@ -40,7 +43,7 @@ const Expenses = () => {
         <ul>
           {expenses.map((exp) => {
             return (
-              <li>
+              <li key={exp.id}>
                 {exp.title}: ${exp.total}
               </li>
             );
