@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import dotenv from 'dotenv'
 import authRoutes from './routes/authRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import incomeRoutes from './routes/incomeRoutes.js'
 
 dotenv.config()
 const app = express();
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/income', incomeRoutes)
 
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => {

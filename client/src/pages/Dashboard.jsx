@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../api";
+import Navbar from "../components/Navbar";
+import Income from "../components/Income";
 
 export default function Dashboard() {
     const [user, setUser] = useState(null)
@@ -8,17 +10,15 @@ export default function Dashboard() {
         API.get('/users/me')
         .then(res => setUser(res.data))
         .catch(err => {
-            console.log("Not authorized")
+            console.log(err, "Not authorized")
         })
     }, [])
 
 
     return (
         <>
-        <h1>Dashboard</h1>
-        {user ? (<p>Welcome, {user.name}</p>)
-        : (<p>Loading user info...</p>)    
-    }
+        <Navbar username={user?.name} balance="3000" />
+        <Income />
         </>
     )
 }
