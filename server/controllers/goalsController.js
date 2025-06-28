@@ -1,4 +1,4 @@
-import goalsModel from "../models/Goals";
+import goalsModel from "../models/Goals.js";
 
 const getGoals = async (req, res) => {
   try {

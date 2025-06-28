@@ -1,6 +1,6 @@
 import express from 'express'
-import protect from '../middleware/authMiddleware'
-import { patchGoals, getGoals, postGoals } from '../controllers/goalsController'
+import protect from '../middleware/authMiddleware.js'
+import { patchGoals, getGoals, postGoals } from '../controllers/goalsController.js'
 
 const router = express.Router();
 
