@@ -10,17 +10,19 @@ const getGoals = async (req, res) => {
 };
 
 const postGoals = async (req, res) => {
-  const { title, targetAmount, deadline } = req.body;
+  const { title, targetAmount, deadline, category } = req.body;
   try {
     const newGoal = await goalsModel.create({
       title,
       targetAmount,
-      deadline,
+      category,
+      deadline: new Date(deadline),
       user: req.user._id,
     });
     res.status(201).json({
       title: newGoal.title,
       targetAmount: newGoal.targetAmount,
+      category:newGoal.category,
       deadline: newGoal.deadline,
       user: req.user._id,
     });

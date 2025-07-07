@@ -1,25 +1,50 @@
-import { useEffect, useState } from "react";
+import GoalProgressChart from "../components/GoalChart";
+import UpcomingBills from "../components/UpcomingBills";
+import DashboardCard from "../components/dashboardCard";
+import FinancialChart from "../components/FinancialChart";
 import API from "../api";
-import Navbar from "../components/Navbar";
-import Income from "../components/Income";
-import Expenses from "../components/Expense";
+import { useState, useEffect } from "react";
 
 export default function Dashboard() {
-  const [user, setUser] = useState(null);
+  const [income, setIncome] = useState([])
+  const [expenses, setExpenses] = useState([])
 
   useEffect(() => {
-    API.get("/users/me")
-      .then((res) => setUser(res.data))
-      .catch((err) => {
-        console.log(err, "Not authorized");
-      });
-  }, []);
+    const fetchIncome = async () => {
+      const res = await API.get('/income')
+      setIncome(res.data)
+    }
+
+    const fetchExpenses = async () => {
+      const res = await API.get('/expenses')
+      setExpenses(res.data)
+    }
+
+    fetchIncome()
+    fetchExpenses()
+  }, [])
 
   return (
     <>
-      <Navbar username={user?.name} balance="3000" />
-      <Income />
-      <Expenses />
+    
+    <div className="left-wrap">
+      <div className="cards-container">
+      <DashboardCard heading="Income" data={income} link="/finances" />
+      <DashboardCard heading="Expenses" data={expenses} link="/finances" />
+      </div>
+      <div className="chart-container">
+      <FinancialChart />
+      </div>
+    </div>
+    <div className="right-wrap">
+      <div className="bills-container">
+        <UpcomingBills />
+      </div>
+      <div className="goals-container">
+        <GoalProgressChart/>
+      </div>
+    </div>
+      
     </>
   );
 }

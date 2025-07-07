@@ -1,0 +1,67 @@
+.inner-wrap {
+    flex: 1;
+    padding: 20px;
+    overflow-y: scroll;
+}
+
+.inner-card {
+    border: 1px solid rgb(228 228 231);
+    border-radius: 10px;
+    padding: 24px;
+    flex:1;
+}
+
+.inner-card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.inner-container {
+    display: flex;
+    gap: 24px;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.form-row > * {
+    flex:1;
+}
+
+.form-row label {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    gap: 6px;
+}
+
+.form-row select, .form-row input {
+    padding: 10px;
+    border: 1px solid rgb(228 228 231);
+    border-radius: 4px;
+}
+
+.transactions-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.inner-card-transaction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgb(228 228 231);
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.left-inner {
+    display: flex;
+    flex-direction: column;
+}

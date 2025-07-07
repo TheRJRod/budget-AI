@@ -43,7 +43,7 @@ const Goals = () => {
         <form onSubmit={handleSubmit}>
             <input onChange={handleChange} name="title" value={form.title} />
             <input onChange={handleChange} name="targetAmount" type="number" value={form.targetAmount} />
-            <input onChange={handleChange} name="deadline" value={form.deadline} />
+            <input onChange={handleChange} name="deadline" value={form.deadline} type="date" />
             <button type="submit">Submit</button>
         </form>
         {loading ? 
@@ -52,7 +52,7 @@ const Goals = () => {
             <ul>
                 {goals.map((goal) => {
                     return (
-                        <li key={goal._id}>{goal.title}: {goal.targetAmount}</li>
+                        <li style={{color:"white"}} key={goal._id}>{goal.title}: {goal.targetAmount}</li>
                     )
                 })}
             </ul>
