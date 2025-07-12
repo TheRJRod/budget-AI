@@ -32,16 +32,16 @@ const postGoals = async (req, res) => {
 };
 
 const patchGoals = async (req, res) => {
-  const { currentAmount } = req.body;
+  const { amount } = req.body;
   const { id } = req.params;
 
   try {
     const goal = await goalsModel.findOne({ _id: id, user: req.user._id });
     if (!goal) return res.status(404).json({ message: "Goal not found" });
 
-    goal.currentAmount += currentAmount;
+    goal.currentAmount += amount;
 
-    const updatedGoal = goal.save();
+    const updatedGoal = await goal.save();
 
     res.status(200).json(updatedGoal);
   } catch (error) {

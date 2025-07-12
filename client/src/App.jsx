@@ -6,6 +6,8 @@ import IncomePage from "./pages/IncomePage";
 import ExpensePage from "./pages/ExpensePage";
 import FinancesPage from "./pages/FinancesPage";
 import GoalsPage from "./pages/GoalsPage";
+import BudgetPage from "./pages/BudgetPage";
+import AiRecsPage from "./pages/AiRecsPage";
 import PrivateRoute from "./components/PrivateRoute";
 import PageWrapper from "./components/PageWrapper";
 import { useLocation } from "react-router-dom";
@@ -32,6 +34,8 @@ function WrappedRoutes() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/finances" element={<FinancesPage/>} />
           <Route path="/goals" element={<GoalsPage/>} />
+          <Route path="/budget" element={<BudgetPage/>} />
+          <Route path="/ai-finance" element={<AiRecsPage/>} />
         </Route>
       </Routes>
     </PageWrapper>

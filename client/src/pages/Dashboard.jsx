@@ -29,20 +29,20 @@ export default function Dashboard() {
     
     <div className="left-wrap">
       <div className="cards-container">
-      <DashboardCard heading="Income" data={income} link="/finances" />
-      <DashboardCard heading="Expenses" data={expenses} link="/finances" />
+      <DashboardCard heading="Income" data={income} link="/finances" classes="bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 border-emerald-500/30 backdrop-blur-sm" />
+      <DashboardCard heading="Expenses" data={expenses} link="/finances" classes="bg-gradient-to-br from-red-500/20 to-pink-600/20 border-red-500/30 backdrop-blur-sm" />
       </div>
-      <div className="chart-container">
+      <div className="chart-container shadow-2xs bg-slate-800/50 border-slate-700/50 backdrop-blur-xl">
       <FinancialChart />
       </div>
     </div>
     <div className="right-wrap">
-      <div className="bills-container">
+      <div className="bills-container bg-gradient-to-br from-purple-500/20 to-pink-600/20 border-purple-500/30 backdrop-blur-sm">
         <UpcomingBills />
       </div>
-      <div className="goals-container">
+      <a href="/goals" className="goals-container bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border-cyan-500/30 backdrop-blur-sm">
         <GoalProgressChart/>
-      </div>
+      </a>
     </div>
       
     </>

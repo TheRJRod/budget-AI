@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 .inner-wrap {
     flex: 1;
     padding: 20px;
@@ -9,6 +11,12 @@
     border-radius: 10px;
     padding: 24px;
     flex:1;
+}
+
+.inner-card.flex {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .inner-card-row {
@@ -64,4 +72,144 @@
 .left-inner {
     display: flex;
     flex-direction: column;
+}
+
+.goal-amounts {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.top-card {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.bottom-card {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.bottom-card form {
+    
+    display: flex;
+    gap: 10px;
+
+}
+
+.goal-quick-add {
+    border: 1px solid rgb(228 228 231);
+    background: white;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease-in;
+}
+
+.goal-quick-add:hover {
+    background: black;
+    color:white;
+    cursor: pointer;
+}
+
+.bottom-card input[type="number"] {
+    padding: 8px;
+    border: 1px solid rgb(228 228 231);
+    font-size: 16px;
+    max-width: 60px;
+    font-weight: bold;
+    border-radius:6px;
+}
+
+.bottom-card button[type="submit"] {
+    padding: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    background: black;
+    color: white;
+    border-radius:6px;
+
+}
+
+.budget-row {
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.chat-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-heading div {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-convo {
+  padding: 1rem;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-bubble {
+  padding: 0.75rem 1rem;
+  border-radius: 18px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.chat-bubble.user {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: white;
+  border-bottom-right-radius: 0;
+}
+
+.chat-bubble.ai {
+  align-self: flex-start;
+  background-color: #f1f1f1;
+  color: #333;
+  border-bottom-left-radius: 0;
+}
+
+.chat-input {
+  display: flex;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #eee;
+  gap: 0.5rem;
+}
+
+.chat-input-buttons {
+    padding: 0.75rem 1rem;
+    display: flex;
+    gap:10px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.chat-input button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0 1rem;
+  border-radius: 6px;
+  cursor: pointer;
 }

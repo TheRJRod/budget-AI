@@ -1,6 +1,6 @@
 
 
-const DashboardCard = ({heading, data, link}) => {
+const DashboardCard = ({heading, data, link, classes}) => {
 
     
     const renderedItems = data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
@@ -26,12 +26,12 @@ const DashboardCard = ({heading, data, link}) => {
 
     return (
         <>
-        <a href={link} className="dashboard-card">
+        <a href={link} className={`dashboard-card ${classes}`}>
         <h2>{heading}</h2>
         <div className="card-table">
            <table>
             <tbody>
-            <tr style={{borderBottom:'1px solid black'}}>
+            <tr >
              <td style={{fontWeight:'bold', fontSize:20}}>{heading}</td>
              <td style={{fontWeight:'bold', fontSize:20}}>Total</td>
              <td style={{fontWeight:'bold', fontSize:20}}>Date</td>

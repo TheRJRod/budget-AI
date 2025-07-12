@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoutes.js";
 import incomeRoutes from "./routes/incomeRoutes.js";
 import expenseRoutes from "./routes/expensesRoutes.js";
 import goalRoutes from "./routes/goalRoutes.js";
+import spendRoutes from "./routes/spendingRoutes.js"
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/income", incomeRoutes);
 app.use("/api/expenses", expenseRoutes);
 app.use('/api/goals', goalRoutes)
+app.use('/api/spending', spendRoutes)
 
 mongoose
   .connect(process.env.MONGODB_URI)

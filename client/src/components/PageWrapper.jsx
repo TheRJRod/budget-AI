@@ -18,7 +18,7 @@ const [user, setUser] = useState(null);
     return (
         <>
         <div className={`pageWrap ${customClass}`}>
-          <div className="main-wrap">
+          <div className="main-wrap bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
             <Navbar username={user?.name} balance="3000" />
             {children}
             </div>

@@ -3,6 +3,10 @@ import mongoose from 'mongoose'
 const incomeSchema = new mongoose.Schema({
   title: String,
   total: Number,
+  category: String,
+  transactionDate: {
+    type: Date,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

@@ -6,18 +6,21 @@ const getExpenses = async (req, res) => {
 };
 
 const postExpenses = async (req, res) => {
-  const { title, total } = req.body;
+  const { title, total, category, isRecurring, recurringType, recurringDate, transactionDate } = req.body;
 
   const newExpense = await Expenses.create({
-    title,
-    total,
-    user: req.user._id,
+   title, total, category, isRecurring, recurringType, recurringDate, transactionDate, user:req.user._id
   });
 
   res.status(201).json({
     title: newExpense.title,
     total: newExpense.total,
-    user: req.user._id,
+    category: newExpense.category,
+    isRecurring: newExpense.isRecurring,
+    recurringType: newExpense.recurringType,
+    recurringDate: newExpense.recurringDate,
+    transactionDate: newExpense.transactionDate,
+    user: req.user._id
   });
 };
 

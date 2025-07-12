@@ -84,7 +84,7 @@ const UpcomingBills = () => {
                 </tr>
             ) : (
                 <>
-                <tr style={{borderBottom:'1px solid black'}}>
+                <tr style={{borderBottom:'1px solid white'}}>
                     <td style={{fontWeight:'bold', fontSize:20}}>Bill</td>
                     <td style={{fontWeight:'bold', fontSize:20}}>Total</td>
                     <td style={{fontWeight:'bold', fontSize:20}}>Date</td>
