@@ -26,10 +26,10 @@ const RenderExpenseOptions = () => (
 );
 
 const RenderFinanceForm = ({ form, handleChange, handleSubmit }) => (
-    <div className="inner-card">
-        <h2 style={{ margin: 0 }}>Add transaction</h2>
-        <p style={{ marginTop: 0 }}>Record your income and expenses</p>
-        <form onSubmit={handleSubmit}>
+    <div className="inner-card shadow-2xs bg-slate-800/50 border-slate-700/50 backdrop-blur-xl">
+        <h2 style={{ margin: 0, fontSize:24, color:'white', fontWeight:'bold' }}>Add transaction</h2>
+        <p className="text-slate-400" style={{ marginTop: 0, fontSize:14 }}>Record your income and expenses</p>
+        <form style={{paddingTop:24}} onSubmit={handleSubmit}>
             <div className="form-row">
                 <label>
                     Type
@@ -96,7 +96,7 @@ const RenderFinanceForm = ({ form, handleChange, handleSubmit }) => (
                 </label>
             </div>
             <div className="form-row">
-                <button type="submit">Add a transaction</button>
+                <button className="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold shadow-lg shadow-cyan-500/25" type="submit">Add a transaction</button>
             </div>
         </form>
     </div>
@@ -107,24 +107,24 @@ const RenderFinanceBreakdown = ({ income, expenses }) => {
     const expensesTotal = expenses.reduce((acc, num) => acc + num?.total, 0);
 
     return (
-        <div className="inner-card">
-            <h2>Summary</h2>
-            <p>Your financial overview</p>
-            <div className="inner-card-row">
-                <span>Total Income</span>
-                <span style={{ fontSize: 24, color: 'green', fontWeight: 'bold' }}>${incomeTotal}</span>
+        <div className="inner-card shadow-2xs bg-slate-800/50 border-slate-700/50 backdrop-blur-xl">
+            <h2 style={{color:"white", fontSize:24, fontWeight:'bold'}}>Summary</h2>
+            <p style={{fontSize:14}} className="text-slate-400">Your financial overview</p>
+            <div style={{marginTop:24}} className="inner-card-row bg-gradient-to-r from-emerald-500/20 to-emerald-600/20 border border-emerald-500/30">
+                <span className="text-emerald-100">Total Income</span>
+                <span className="font-bold text-emerald-400" style={{ fontSize: 24 }}>${incomeTotal}</span>
             </div>
-            <div className="inner-card-row">
-                <span>Total Expenses</span>
-                <span style={{ fontSize: 24, color: 'red', fontWeight: 'bold' }}>${expensesTotal}</span>
+            <div className="inner-card-row bg-gradient-to-r from-red-500/20 to-red-600/20 border border-red-500/30">
+                <span className="text-red-100">Total Expenses</span>
+                <span className="font-bold text-red-400" style={{ fontSize: 24 }}>${expensesTotal}</span>
             </div>
-            <div className="inner-card-row" style={{ borderTop: '1px solid rgb(228 228 231)', paddingTop: 14 }}>
-                <span>Net Income</span>
-                <span
+            <div className="inner-card-row bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/30" >
+                <span className="text-cyan-100">Net Income</span>
+                <span className="font-bold text-cyan-400"
                     style={{
                         fontSize: 24,
-                        fontWeight: 'bold',
-                        color: incomeTotal - expensesTotal < 0 ? "red" : "green"
+                        
+                        
                     }}
                 >
                     ${incomeTotal - expensesTotal}
@@ -136,10 +136,10 @@ const RenderFinanceBreakdown = ({ income, expenses }) => {
 
 const RenderRecentTransactions = ({ transactions }) => (
 
-    <div style={{ marginTop: 24 }} className="inner-card">
-        <h2 style={{ margin: 0 }}>Recent Transactions</h2>
-        <p style={{ marginTop: 0 }}>Your latest financial activity</p>
-        <div className="transactions-wrap">
+    <div style={{ marginTop: 24 }} className="inner-card shadow-2xs bg-slate-800/50 border-slate-700/50 backdrop-blur-xl">
+        <h2 style={{color:"white", fontSize:24, fontWeight:'bold'}}>Recent Transactions</h2>
+        <p style={{fontSize:14}} className="text-slate-400">Your latest financial activity</p>
+        <div style={{marginTop:24}} className="transactions-wrap">
             {transactions.map((item, index) => {
                 let formatted = ""
                 if(item.transactionDate) {
@@ -151,14 +151,14 @@ const RenderRecentTransactions = ({ transactions }) => (
                 }).format(date)
             }
                 return (
-                <div key={index} className="inner-card-transaction">
+                <div key={index} className="inner-card-transaction bg-slate-700/30 hover:bg-slate-700/50 transition-colors duration-200">
                     <div className="left-inner">
-                        <span style={{ fontWeight: 'bold' }}>{item.title}</span>
-                        <span>{formatted}</span>
+                        <span style={{ fontWeight: 'bold', color:'white' }}>{item.title}</span>
+                        <span className="text-slate-400">{formatted}</span>
                     </div>
                     <div className="right-inner">
-                        <span style={{ fontSize: 18, fontWeight: 'bold', color: item.type === 'income' ? 'green' : 'red' }}>
-                            ${item.total}
+                        <span className={`${item.type === "income" ? "text-emerald-400" : "text-red-400"}`} style={{ fontSize: 18, fontWeight: 'bold' }}>
+                            {item.type === "income" ? "+ " : "- "}${item.total}
                         </span>
                     </div>
                 </div>

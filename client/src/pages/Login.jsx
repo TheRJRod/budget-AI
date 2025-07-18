@@ -23,9 +23,13 @@ export default function Login() {
 
   return (
     <form onSubmit={handleSubmit}>
+      <div className='form-row'>
       <input name="email" onChange={handleChange} placeholder="Email" />
+      </div>
+      <div className='form-row'>
       <input name="password" type="password" onChange={handleChange} placeholder="Password" />
-      <button type="submit">Login</button>
+      </div>
+      <button className='w-full flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-300 bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25' type="submit">Login</button>
       {error && <p>{error}</p>}
     </form>
   );

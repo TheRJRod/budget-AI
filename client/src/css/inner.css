@@ -7,10 +7,10 @@
 }
 
 .inner-card {
-    border: 1px solid rgb(228 228 231);
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 24px;
     flex:1;
+    color:white;
 }
 
 .inner-card.flex {
@@ -24,6 +24,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    padding:10px;
+    border-radius: 8px;
 }
 
 .inner-container {
@@ -46,12 +48,22 @@
     flex-direction: column;
     font-weight: bold;
     gap: 6px;
+    color:white;
 }
 
 .form-row select, .form-row input {
     padding: 10px;
-    border: 1px solid rgb(228 228 231);
+    background-color: rgb(51 65 85 / 0.5);
     border-radius: 4px;
+    color:white;
+}
+
+.form-row select::placeholder, .form-row input::placeholder {
+    color: white;
+}
+
+.form-row button:hover {
+    cursor: pointer;
 }
 
 .transactions-wrap {
@@ -64,8 +76,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid rgb(228 228 231);
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 14px;
 }
 
@@ -78,6 +89,7 @@
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
+    color: white;
 }
 
 .top-card {
@@ -102,11 +114,11 @@
 }
 
 .goal-quick-add {
-    border: 1px solid rgb(228 228 231);
+    /* border: 1px solid rgb(228 228 231);
     background: white;
-    font-weight: bold;
+    font-weight: bold; */
     padding: 8px;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 16px;
     transition: all 0.3s ease-in;
 }
@@ -119,21 +131,23 @@
 
 .bottom-card input[type="number"] {
     padding: 8px;
-    border: 1px solid rgb(228 228 231);
     font-size: 16px;
     max-width: 60px;
     font-weight: bold;
-    border-radius:6px;
+    border-radius:8px;
 }
 
 .bottom-card button[type="submit"] {
     padding: 8px;
     font-size: 16px;
     font-weight: bold;
-    background: black;
     color: white;
-    border-radius:6px;
+    border-radius:8px;
 
+}
+
+.bottom-card button[type="submit"]:hover {
+    cursor: pointer;
 }
 
 .budget-row {
@@ -173,22 +187,21 @@
 
 .chat-bubble.user {
   align-self: flex-end;
-  background-color: #007bff;
-  color: white;
+  /* background-color: #007bff;
+  color: white; */
   border-bottom-right-radius: 0;
 }
 
 .chat-bubble.ai {
   align-self: flex-start;
-  background-color: #f1f1f1;
-  color: #333;
+  /* background-color: #f1f1f1;
+  color: #333; */
   border-bottom-left-radius: 0;
 }
 
 .chat-input {
   display: flex;
   padding: 0.75rem 1rem;
-  border-top: 1px solid #eee;
   gap: 0.5rem;
 }
 
@@ -212,4 +225,8 @@
   padding: 0 1rem;
   border-radius: 6px;
   cursor: pointer;
+}
+
+.chat-input-buttons button:hover {
+    cursor: pointer;
 }

@@ -1,8 +1,9 @@
 import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
 import API from "../api";
+import { Outlet } from "react-router-dom";
 
-const PageWrapper = ({children, customClass}) => {
+const PageWrapper = ({customClass}) => {
 const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const [user, setUser] = useState(null);
         <div className={`pageWrap ${customClass}`}>
           <div className="main-wrap bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
             <Navbar username={user?.name} balance="3000" />
-            {children}
+            <Outlet />
             </div>
         </div>
         </>
