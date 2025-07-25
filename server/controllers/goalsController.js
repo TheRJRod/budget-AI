@@ -1,4 +1,6 @@
 import goalsModel from "../models/Goals.js";
+import WeeklyGoals from "../models/WeeklyGoals.js";
+import { startOfWeek } from "date-fns";
 
 const getGoals = async (req, res) => {
   try {
@@ -22,7 +24,7 @@ const postGoals = async (req, res) => {
     res.status(201).json({
       title: newGoal.title,
       targetAmount: newGoal.targetAmount,
-      category:newGoal.category,
+      category: newGoal.category,
       deadline: newGoal.deadline,
       user: req.user._id,
     });
@@ -42,6 +44,27 @@ const patchGoals = async (req, res) => {
     goal.currentAmount += amount;
 
     const updatedGoal = await goal.save();
+
+    const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
+
+    const weekly = await WeeklyGoals.findOne({
+      user: req.user._id,
+      weekStart,
+    });
+
+    if (weekly) {
+      const weeklyGoal = weekly.goals.find(
+        (g) => g.linkedGoalId?.toString() === id
+      );
+
+      if (weeklyGoal) {
+        weeklyGoal.currentAmount += amount;
+        if (weeklyGoal.currentAmount >= weeklyGoal.targetAmount) {
+          weeklyGoal.completed = true;
+        }
+        await weekly.save();
+      }
+    }
 
     res.status(200).json(updatedGoal);
   } catch (error) {
