@@ -17,16 +17,17 @@ body, html {
   min-height: 0; 
 }
 
-.top-wrap, .bottom-wrap {
-  /* overflow-y: auto; */
+/* .top-wrap, .bottom-wrap {
+  overflow-y: auto;
   flex-grow: 1;
   min-height: 0;
-}
+} */
 
 .inner-wrap {
   flex:1;
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
 
 /* .top-wrap {
@@ -76,6 +77,10 @@ body, html {
     justify-content: space-between;
     flex: 1;
     margin-bottom: 20px;
+}
+
+.nav-links button:hover {
+  cursor: pointer;
 }
 
 .nav-links ul {
@@ -239,8 +244,6 @@ body, html {
 
 .goal-chart-container {
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
   color:white
 }
 

@@ -3,7 +3,7 @@ const BudgetCard = ({ goal }) => {
 
     const progress = goal.currentAmount / goal.targetAmount;
     const percentage = Math.min(Math.round(progress * 100), 100);
-
+    const difference = (goal.targetAmount - goal.currentAmount).toString().replace("-","");
 
     const categoryColor = (catTitle) => {
         switch(catTitle) {
@@ -37,7 +37,7 @@ const BudgetCard = ({ goal }) => {
                     <span style={{ fontWeight: 700, fontSize: 22 }}>{goal.title}</span>
                     <div style={{display:"flex", flexDirection:'column', alignItems:'flex-end', gap:5}}>
                     <span style={{fontWeight:'bold'}}>${goal.currentAmount} / ${goal.targetAmount}</span>
-                    <span className={`${goal.targetAmount - goal.currentAmount < 0 ? "text-red-400" : "text-emerald-400"}`}>${`${goal.targetAmount - goal.currentAmount}`}{goal.targetAmount - goal.currentAmount < 0 ? " over" : " left"}</span>
+                    <span className={`${goal.targetAmount - goal.currentAmount < 0 ? "text-red-400" : "text-emerald-400"}`}>${`${difference}`}{goal.targetAmount - goal.currentAmount < 0 ? " over" : " left"}</span>
                     </div>
             </div>
 

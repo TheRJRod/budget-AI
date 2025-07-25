@@ -2,27 +2,12 @@ import GoalProgressChart from "../components/GoalChart";
 import UpcomingBills from "../components/UpcomingBills";
 import DashboardCard from "../components/dashboardCard";
 import FinancialChart from "../components/FinancialChart";
-import API from "../api";
-import { useState, useEffect } from "react";
+import { useFinances } from "../context/FinancesContext";
 
 export default function Dashboard() {
-  const [income, setIncome] = useState([])
-  const [expenses, setExpenses] = useState([])
+  const {income, expenses} = useFinances()
 
-  useEffect(() => {
-    const fetchIncome = async () => {
-      const res = await API.get('/income')
-      setIncome(res.data)
-    }
-
-    const fetchExpenses = async () => {
-      const res = await API.get('/expenses')
-      setExpenses(res.data)
-    }
-
-    fetchIncome()
-    fetchExpenses()
-  }, [])
+  
 
   return (
     <>

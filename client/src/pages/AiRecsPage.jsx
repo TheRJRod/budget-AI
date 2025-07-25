@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import API from "../api";
+import ReactMarkdown from "react-markdown";
+
 
 const AiRecsPage = () => {
     const [messages, setMessages] = useState([{sender:"ai", text:"Hello! I'm your AI financial assistant. I can help you analyze your spending, create budgets, and provide personalized financial advice. What would you like to know about your finances?"}])
@@ -12,20 +15,31 @@ const AiRecsPage = () => {
         })
     }, [messages])
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if(!input.trim()) return;
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
 
-        const newMessages = [...messages, {sender:"user", text: input}]
-        setMessages(newMessages)
-        setInput("")
+    const newMessages = [...messages, { sender: "user", text: input }];
+    setMessages(newMessages);
+    setInput("");
 
-        setTimeout(() => {
-            setMessages((prev) => [
-                ...prev, {sender:"ai", text:"This is a simulated reply"}
-            ])
-        }, 500);
+    try {
+        const res = await API.post("/ask-ai", {userMessage: input})
+        const data = res.data;
+
+        setMessages((prev) => [
+            ...prev,
+            { sender: "ai", text: data.response || "Sorry, I couldn’t process that." }
+        ]);
+    } catch (err) {
+        console.error("AI request error:", err);
+        setMessages((prev) => [
+            ...prev,
+            { sender: "ai", text: "Oops! Something went wrong. Please try again later." }
+        ]);
     }
+};
+
 
     const handleButtonClick = (e) => {
         setInput(e.target.value)
@@ -45,7 +59,7 @@ const AiRecsPage = () => {
                 <div className="chat-convo bg-slate-800/50 border-slate-700/50 backdrop-blur-xl" ref={convoRef}>
                     {messages.map((msg, i) => (
                         <div key={i} className={`chat-bubble ${msg.sender === "user" ? "user rounded-xl p-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25" : "ai rounded-xl p-4 bg-slate-700/50 border border-slate-600/50 text-slate-100 backdrop-blur-sm"}`}>
-                            {msg.text}
+                           <ReactMarkdown>{msg.text}</ReactMarkdown>
                         </div>
                     ))}
                 </div>

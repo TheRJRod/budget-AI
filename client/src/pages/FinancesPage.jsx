@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import API from '../api';
 import "../css/inner.css";
-
+import { useFinances } from "../context/FinancesContext";
 /* ----- Helper Components ----- */
 
 const RenderIncomeOptions = () => (
@@ -40,7 +40,7 @@ const RenderFinanceForm = ({ form, handleChange, handleSubmit }) => (
                 </label>
                 <label>
                     Total
-                    <input name="total" onChange={handleChange} value={form.total} />
+                    <input type="number" name="total" onChange={handleChange} value={form.total} />
                 </label>
             </div>
             <div className="form-row">
@@ -171,9 +171,7 @@ const RenderRecentTransactions = ({ transactions }) => (
 /* ----- Main Component ----- */
 
 const FinancesPage = () => {
-    const [income, setIncome] = useState([]);
-    const [expenses, setExpenses] = useState([]);
-    const [transactions, setTransactions] = useState([]);
+    const {income, expenses, refreshFinances ,loading, postFinance} = useFinances()
     const [form, setForm] = useState({
         total: "",
         title: "",
@@ -184,29 +182,13 @@ const FinancesPage = () => {
         recurringType: null,
         recurringDate: null
     });
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchFinances = async () => {
-            try {
-                const resInc = await API.get('/income');
-                const resExp = await API.get('/expenses');
 
-                const incomeWithType = resInc.data.map(item => ({ ...item, type: 'income' }));
-                const expensesWithType = resExp.data.map(item => ({ ...item, type: 'expense' }));
+   const transactions = [
+    ...income.map(item => ({ ...item, type: "income" })),
+    ...expenses.map(item => ({ ...item, type: "expense" })),
+].sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate)); // optional sort by date desc
 
-                setIncome(resInc.data);
-                setExpenses(resExp.data);
-                setTransactions([...incomeWithType, ...expensesWithType]);
-            } catch (error) {
-                console.log("Error fetching Finances", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchFinances();
-    }, []);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -216,18 +198,29 @@ const FinancesPage = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        const endpoint = form.type === "income" ? '/income' : '/expenses';
+    const endpoint = form.type === "income" ? "/income" : "/expenses";
 
-        API.post(endpoint, form)
-            .then(res => {
-                const newTransaction = { ...res.data, type: form.type };
-                setTransactions(prev => [...prev, newTransaction]);
-            })
-            .catch(err => console.error("Error saving transaction", err));
-    };
+    try {
+        await postFinance(endpoint, form);
+        await refreshFinances(); // waits until data is reloaded from API
+        setForm({
+            total: "",
+            title: "",
+            isRecurring: false,
+            category: "",
+            type: "income",
+            transactionDate: "",
+            recurringType: null,
+            recurringDate: null
+        });
+    } catch (err) {
+        console.error("Error saving transaction", err);
+    }
+};
+
 
     if (loading) return <p>Loading finances...</p>;
 

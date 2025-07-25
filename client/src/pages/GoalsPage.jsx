@@ -1,43 +1,19 @@
 import { useState, useEffect } from "react";
 import API from "../api";
 import GoalCard from "../components/GoalsCard";
+import { useGoals } from "../context/GoalsContext";
 
 const GoalsPage = () => {
-    const [goals, setGoals] = useState([])
     const [form, setForm] = useState({title:"", targetAmount:"", deadline:"", category:""})
-    const [loading, setLoading] = useState(true)
+    const {goals,loading, refreshGoals, postGoals} = useGoals()
 
 
-    useEffect(() => {
-        const fetchGoals = async () => {
-            try {
-                 const res = await API.get('/goals')
-                 setGoals(res.data)
-            } catch (error) {
-                console.log("Error fetching goals", error)
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        fetchGoals()
-
-    }, [])
-
-    const refreshGoals = async () => {
-   try {
-      const res = await API.get('/goals');
-      setGoals(res.data);
-   } catch (error) {
-      console.error("Error fetching goals:", error);
-   }
-};
 
     const handlePostSubmit = (e) => {
         e.preventDefault();
-        API.post('/goals', form)
-        .then(res => setGoals([...goals, res.data]))
-    }
+        postGoals(form)
+    };
+
 
     const handlePostChange = (e) => {
         setForm({...form, [e.target.name]: e.target.value})
@@ -45,7 +21,7 @@ const GoalsPage = () => {
 
   
 
-    
+    if (loading) return <p>Loading Goals...</p>;
 
     return (
         <>
@@ -79,7 +55,7 @@ const GoalsPage = () => {
                 </div>
                 </form>
             </div>
-           <div style={{ marginTop: 24 }} className="inner-container">
+           <div style={{ marginTop: 24 }} className="inner-container goals-cards">
                 {goals.map((goal, index) => (
                     <GoalCard key={goal._id} goal={goal} refreshGoals={refreshGoals} index={index} />
                 ))}

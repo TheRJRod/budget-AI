@@ -1,30 +1,11 @@
 import { useState, useEffect } from "react";
 import API from '../api'
 import BudgetCard from "../components/BudgetCard";
+import { useFinances } from "../context/FinancesContext";
 
 const BudgetPage = () => {
-    const [expenses, setExpenses] = useState([])
-    const [income, setIncome] = useState([])
-    const [loading, setLoading] = useState(true)
-    
+    const {income, expenses} = useFinances()
    
-    
-
-    useEffect(() => {
-        const fetchFinances = async () => {
-            try {
-            const resInc = await API.get('/income')
-            const resExp = await API.get('/expenses')
-            setIncome(resInc.data)
-            setExpenses(resExp.data)
-            } catch (error) {
-                console.log("Error fetching finances:", error)
-            } finally {
-                setLoading(false)
-            }
-        }
-        fetchFinances()
-    }, [])
 
     const totalsByCategory = expenses.reduce((acc, item) => {
         const category = item.category;
@@ -81,9 +62,7 @@ const BudgetPage = () => {
                 <p style={{marginBottom:24}}>Track your spending against your budget by category</p>
                 {Object.entries(totalsByCategory).map(([title, total]) => {
                     const budgetGoal = {currentAmount:total, targetAmount: 1000, title:title}
-                    if(budgetGoal.currentAmount > budgetGoal.targetAmount) {
-                        setAmountOver(prev => prev + 1)
-                    }
+                    
                    return (
                    <div className="budget-row" key={title}>
                     <BudgetCard key={title} goal={budgetGoal}  />

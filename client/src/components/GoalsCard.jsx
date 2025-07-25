@@ -5,9 +5,13 @@ import API from "../api";
 const GoalCard = ({ goal, refreshGoals, index }) => {
     const [contribution, setContribution] = useState(0);
 
-    const progress = goal.currentAmount / goal.targetAmount;
+    const progress =
+    goal.targetAmount && goal.targetAmount > 0
+        ? goal.currentAmount / goal.targetAmount
+        : 0;
+
     const percentage = Math.min(Math.round(progress * 100), 100);
-    const rising = Math.random() > 0.5; // Placeholder
+    
 
    const date = goal.deadline ? new Date(goal.deadline) : null;
 let formatted = "";

@@ -85,6 +85,14 @@
     flex-direction: column;
 }
 
+.goals-cards {
+    flex-wrap: wrap;
+}
+
+.goals-cards .inner-card {
+    min-width: 316px;
+}
+
 .goal-amounts {
     display: flex;
     justify-content: space-between;
