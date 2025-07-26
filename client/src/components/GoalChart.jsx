@@ -12,6 +12,7 @@ const GoalProgressChart = () => {
         className="goal-chart-title"
       >
         <svg
+       
           xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
@@ -21,7 +22,7 @@ const GoalProgressChart = () => {
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-target h-5 w-5 text-purple-400"
+          className="lucide lucide-target h-5 w-5 text-cyan-400"
         >
           <circle cx="12" cy="12" r="10"></circle>
           <circle cx="12" cy="12" r="6"></circle>

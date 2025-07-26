@@ -2,7 +2,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
-const DashboardCard = ({ heading, data, link, classes }) => {
+const DashboardCard = ({ heading, data, link, classes, icon }) => {
   const settings = {
     dots: false, // Optional: pagination dots
     infinite: true,
@@ -46,7 +46,7 @@ const DashboardCard = ({ heading, data, link, classes }) => {
   return (
     <>
       <a href={link} className={`dashboard-card ${classes}`}>
-        <h2>Monthly {heading}</h2>
+        <h2 className="text-2xl font-bold flex items-center gap-[10px]">{icon} Monthly {heading}</h2>
         <p style={{ fontSize: 30, fontWeight: "bold" }}>${itemsTotal}</p>
         <div className="card-slider">
           {data.length > 1 ? (

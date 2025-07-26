@@ -4,6 +4,7 @@ import DashboardCard from "../components/DashboardCard";
 import WeeklyGoals from "../components/WeeklyGoals";
 import FinancialChart from "../components/FinancialChart";
 import { useFinances } from "../context/FinancesContext";
+import { LucideTrendingUp, LucideTrendingDown } from "lucide-react";
 
 export default function Dashboard() {
   const { income, expenses } = useFinances();
@@ -18,12 +19,14 @@ export default function Dashboard() {
               data={income}
               link="/finances"
               classes="bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 border-emerald-500/30 backdrop-blur-sm"
+              icon={<LucideTrendingUp className="text-emerald-400"/>}
             />
             <DashboardCard
               heading="Expenses"
               data={expenses}
               link="/finances"
               classes="bg-gradient-to-br from-red-500/20 to-pink-600/20 border-red-500/30 backdrop-blur-sm"
+              icon={<LucideTrendingDown className="text-red-400" />}
             />
             <div className="bills-container bg-gradient-to-br from-purple-500/20 to-pink-600/20 border-purple-500/30 backdrop-blur-sm">
               <UpcomingBills />

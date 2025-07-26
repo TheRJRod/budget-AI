@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import API from "../api";
+import { LucideDollarSign } from "lucide-react";
 
 const UpcomingBills = () => {
     const currDate = new Intl.DateTimeFormat("en-US", {
@@ -38,18 +39,20 @@ const UpcomingBills = () => {
         const date = new Date(item.createdAt);
         const formatted = new Intl.DateTimeFormat("en-US", {
         day: "numeric",
-        month: "long",
+        month: "2-digit",
         year: "numeric",
         }).format(date);
 
         
         return (
             
-            <tr key={item?._id}>
-                <td>{item?.title}:</td> 
-                <td>${item?.total}</td>
-                <td>{formatted}</td>
-            </tr>
+            <div className="flex justify-between items-center bg-gradient-to-br from-purple-400/20 to-pink-500/20 rounded-md p-2" key={item?._id}>
+                <div>
+                <div>{item?.title}:</div> 
+                <div>{formatted}</div>
+                </div>
+                <span>${item?.total}</span>
+            </div>
         )
     })
 
@@ -60,7 +63,7 @@ const UpcomingBills = () => {
         (  
         <>
         <div className="bills-heading">
-            <h2>Upcoming Bills</h2>
+            <h2 className="text-2xl font-bold flex items-center gap-[10px]"><LucideDollarSign className="text-purple-400" /> Upcoming Bills</h2>
         <select onChange={handleChange} value={billMonth}>
             <option value="january">January</option>
             <option value="february">February</option>
@@ -76,25 +79,20 @@ const UpcomingBills = () => {
             <option value="december">December</option>
         </select>
         </div>
-        <table>
-            <tbody>
+        <div className="flex flex-col gap-2">
+            
             {renderedBills.length === 0 ? ( 
-                <tr>
-                <td colSpan="3">No bills for this month</td>
-                </tr>
+                <div>
+                <p >No bills for this month</p>
+                </div>
             ) : (
                 <>
-                <tr style={{borderBottom:'1px solid white'}}>
-                    <td style={{fontWeight:'bold', fontSize:20}}>Bill</td>
-                    <td style={{fontWeight:'bold', fontSize:20}}>Total</td>
-                    <td style={{fontWeight:'bold', fontSize:20}}>Date</td>
-                </tr>
                 {renderedBills}
                 </>
             )}
-            </tbody>
+            
 
-           </table>
+           </div>
            </>
            ) :
         (<p>No upcoming bills yet.</p>)

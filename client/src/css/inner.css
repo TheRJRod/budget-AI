@@ -140,7 +140,7 @@
 .bottom-card input[type="number"] {
     padding: 8px;
     font-size: 16px;
-    max-width: 60px;
+    max-width: 100px;
     font-weight: bold;
     border-radius:8px;
 }
