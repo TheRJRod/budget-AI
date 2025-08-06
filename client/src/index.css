@@ -221,14 +221,14 @@ html {
 }
 
 .recurring-container {
-  height:150px;
+  height: 150px;
   overflow: auto;
 }
 
 /* Target the scrollbar itself */
 .recurring-container::-webkit-scrollbar {
-  width: 8px;      /* Vertical scrollbar width */
-  height: 8px;     /* Horizontal scrollbar height */
+  width: 8px; /* Vertical scrollbar width */
+  height: 8px; /* Horizontal scrollbar height */
 }
 
 /* The track (background) */
@@ -303,6 +303,7 @@ html {
   gap: 4px;
   font-size: 14px;
   color: white;
+  justify-content: space-between;
 }
 
 .goal-chart-arrow {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import API from "../api";
 import "../css/inner.css";
 import { useFinances } from "../context/FinancesContext";
@@ -28,7 +28,12 @@ const RenderIncomeOptions = () => (
   </>
 );
 
-const RenderFinanceForm = ({ form, handleChange, handleSubmit, handleDateChange }) => {
+const RenderFinanceForm = ({
+  form,
+  handleChange,
+  handleSubmit,
+  handleDateChange,
+}) => {
   // const handleChange = (e) => {
   //   const { name, value, type, checked } = e.target;
   //   setForm((prev) => ({
@@ -46,29 +51,38 @@ const RenderFinanceForm = ({ form, handleChange, handleSubmit, handleDateChange 
     e.preventDefault();
 
     if (form.isRecurring) {
-  if (!form.recurringType || !form.recurringDate || form.recurringDate === "") {
-    alert("Please select a recurring type and provide a valid day.");
-    return;
-  }
+      if (
+        !form.recurringType ||
+        !form.recurringDate ||
+        form.recurringDate === ""
+      ) {
+        alert("Please select a recurring type and provide a valid day.");
+        return;
+      }
 
-  const recurringDateNum = Number(form.recurringDate);
-  
-  if (
-    (form.recurringType === "weekly" && (recurringDateNum < 0 || recurringDateNum > 6)) ||
-    (form.recurringType === "monthly" && (recurringDateNum < 1 || recurringDateNum > 31)) ||
-    (form.recurringType === "yearly" && (recurringDateNum < 1 || recurringDateNum > 366))
-  ) {
-    alert("Invalid recurring day for the selected recurring type.");
-    return;
-  }
-}
+      const recurringDateNum = Number(form.recurringDate);
+
+      if (
+        (form.recurringType === "weekly" &&
+          (recurringDateNum < 0 || recurringDateNum > 6)) ||
+        (form.recurringType === "monthly" &&
+          (recurringDateNum < 1 || recurringDateNum > 31)) ||
+        (form.recurringType === "yearly" &&
+          (recurringDateNum < 1 || recurringDateNum > 366))
+      ) {
+        alert("Invalid recurring day for the selected recurring type.");
+        return;
+      }
+    }
 
     handleSubmit(e);
   };
 
   return (
     <div className="inner-card shadow-2xs bg-slate-800/50 border-slate-700/50 backdrop-blur-xl">
-      <h2 style={{ margin: 0, fontSize: 24, color: "white", fontWeight: "bold" }}>
+      <h2
+        style={{ margin: 0, fontSize: 24, color: "white", fontWeight: "bold" }}
+      >
         Add transaction
       </h2>
       <p className="text-slate-400" style={{ marginTop: 0, fontSize: 14 }}>
@@ -97,28 +111,33 @@ const RenderFinanceForm = ({ form, handleChange, handleSubmit, handleDateChange 
         <div className="form-row">
           <label>
             Category
-            <select name="category" onChange={handleChange} value={form.category}>
+            <select
+              name="category"
+              onChange={handleChange}
+              value={form.category}
+            >
               <option value="" disabled>
                 -- Select a category --
               </option>
-              {form.type === "income" ? <RenderIncomeOptions /> : <RenderExpenseOptions />}
+              {form.type === "income" ? (
+                <RenderIncomeOptions />
+              ) : (
+                <RenderExpenseOptions />
+              )}
             </select>
           </label>
         </div>
         <div className="form-row">
           <label>
             Date
-            
-             
-       <DatePicker
-    selected={form.transactionDate}
-    onChange={handleDateChange}
-    placeholderText="Select a date"
-    className="custom-input"
-    calendarClassName="custom-calendar"
-    dateFormat="MM/dd/yyyy" // optional: match your existing format
-  />
-   
+            <DatePicker
+              selected={form.transactionDate}
+              onChange={handleDateChange}
+              placeholderText="Select a date"
+              className="custom-input"
+              calendarClassName="custom-calendar"
+              dateFormat="MM/dd/yyyy" // optional: match your existing format
+            />
           </label>
           <label style={{ flexDirection: "row", alignItems: "center" }}>
             Recurring?
@@ -183,24 +202,28 @@ const RenderFinanceForm = ({ form, handleChange, handleSubmit, handleDateChange 
 };
 
 const RenderFinanceBreakdown = ({ income, expenses }) => {
-   const now = new Date();
+  const now = new Date();
 
-  const incomeTotal = income.filter((item) => {
+  const incomeTotal = income
+    .filter((item) => {
       const transactionDate = item.transactionDate;
-      const inputDate = new Date(transactionDate)
-      const isSameMonth = inputDate.getMonth() === now.getMonth() && inputDate.getFullYear() === now.getFullYear();
-      return (
-      item.recurringType === "monthly" || isSameMonth
-      )
-    }).reduce((acc, num) => acc + num?.total, 0);
-  const expensesTotal = expenses.filter((item) => {
+      const inputDate = new Date(transactionDate);
+      const isSameMonth =
+        inputDate.getMonth() === now.getMonth() &&
+        inputDate.getFullYear() === now.getFullYear();
+      return item.recurringType === "monthly" || isSameMonth;
+    })
+    .reduce((acc, num) => acc + num?.total, 0);
+  const expensesTotal = expenses
+    .filter((item) => {
       const transactionDate = item.transactionDate;
-      const inputDate = new Date(transactionDate)
-      const isSameMonth = inputDate.getMonth() === now.getMonth() && inputDate.getFullYear() === now.getFullYear();
-      return (
-      item.recurringType === "monthly" || isSameMonth
-      )
-    }).reduce((acc, num) => acc + num?.total, 0);
+      const inputDate = new Date(transactionDate);
+      const isSameMonth =
+        inputDate.getMonth() === now.getMonth() &&
+        inputDate.getFullYear() === now.getFullYear();
+      return item.recurringType === "monthly" || isSameMonth;
+    })
+    .reduce((acc, num) => acc + num?.total, 0);
 
   return (
     <div className="inner-card shadow-2xs bg-slate-800/50 border-slate-700/50 backdrop-blur-xl">
@@ -297,16 +320,15 @@ const FinancesPage = () => {
   const { income, expenses, refreshFinances, loading, postFinance } =
     useFinances();
   const [form, setForm] = useState({
-  type: "expense",
-  total: null,
-  category: "",
-  isRecurring: false,
-  recurringType: "none",
-  recurringDate: "",
-  title: "",
-  transactionDate: new Date()
-});
-
+    type: "expense",
+    total: null,
+    category: "",
+    isRecurring: false,
+    recurringType: "none",
+    recurringDate: "",
+    title: "",
+    transactionDate: new Date(),
+  });
 
   const transactions = [
     ...income.map((item) => ({ ...item, type: "income" })),
@@ -314,87 +336,85 @@ const FinancesPage = () => {
   ].sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate)); // optional sort by date desc
 
   const handleChange = (e) => {
-  const { name, value, type, checked } = e.target;
-  setForm((prev) => ({
-    ...prev,
-    [name]: type === "checkbox" 
-      ? checked 
-      : (name === "total" || name === "recurringDate") 
-        ? Number(value) 
-        : value,
-  }));
-};
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : name === "total" || name === "recurringDate"
+          ? Number(value)
+          : value,
+    }));
+  };
 
-const handleDateChange = (date) => {
-  setForm((prev) => ({
-    ...prev,
-    transactionDate: date,
-  }));
-};
-
+  const handleDateChange = (date) => {
+    setForm((prev) => ({
+      ...prev,
+      transactionDate: date,
+    }));
+  };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!form.category) {
-    alert("Please select a category.");
-    return;
-  } else if(form.total == null) {
-    alert("Please enter a total")
-  }
-
-  const endpoint = form.type === "income" ? "/income" : "/expenses";
-
-  // Create payload from form
-  const payload = {
-  ...form,
-  transactionDate: form.transactionDate.toISOString().split("T")[0],
-};
-
-
-  // Build recurrenceDetails based on type
-  if (form.isRecurring && form.recurringType) {
-    const recurrenceDetails = {};
-
-    switch (form.recurringType) {
-      case "weekly":
-        recurrenceDetails.dayOfWeek = Number(form.recurringDate); // 0–6
-        break;
-      case "monthly":
-        recurrenceDetails.dayOfMonth = Number(form.recurringDate); // 1–31
-        break;
-      case "yearly":
-        recurrenceDetails.dayOfYear = Number(form.recurringDate);
-        break;
+    e.preventDefault();
+    if (!form.category) {
+      alert("Please select a category.");
+      return;
+    } else if (form.total == null) {
+      alert("Please enter a total");
     }
 
-    payload.recurrenceDetails = recurrenceDetails;
-  }
+    const endpoint = form.type === "income" ? "/income" : "/expenses";
 
-  // console.log("=== FRONTEND DEBUG ===");
-  // console.log("Form state:", form);
-  // console.log("Final payload being sent:", payload);
-  // console.log("Recurring date value:", form.recurringDate, "Type:", typeof form.recurringDate);
+    // Create payload from form
+    const payload = {
+      ...form,
+      transactionDate: form.transactionDate.toISOString().split("T")[0],
+    };
 
-  try {
-    await postFinance(endpoint, payload);
-    await refreshFinances();
+    // Build recurrenceDetails based on type
+    if (form.isRecurring && form.recurringType) {
+      const recurrenceDetails = {};
 
-    // Reset form
-    setForm({
-      total: 0,
-      title: "",
-      isRecurring: false,
-      category: "",
-      type: "income",
-      transactionDate: new Date(),
-      recurringType: "",
-      recurringDate: "",
-    });
-  } catch (err) {
-    console.error("Error saving transaction", err);
-  }
-};
+      switch (form.recurringType) {
+        case "weekly":
+          recurrenceDetails.dayOfWeek = Number(form.recurringDate); // 0–6
+          break;
+        case "monthly":
+          recurrenceDetails.dayOfMonth = Number(form.recurringDate); // 1–31
+          break;
+        case "yearly":
+          recurrenceDetails.dayOfYear = Number(form.recurringDate);
+          break;
+      }
 
+      payload.recurrenceDetails = recurrenceDetails;
+    }
+
+    // console.log("=== FRONTEND DEBUG ===");
+    // console.log("Form state:", form);
+    // console.log("Final payload being sent:", payload);
+    // console.log("Recurring date value:", form.recurringDate, "Type:", typeof form.recurringDate);
+
+    try {
+      await postFinance(endpoint, payload);
+      await refreshFinances();
+
+      // Reset form
+      setForm({
+        total: 0,
+        title: "",
+        isRecurring: false,
+        category: "",
+        type: "income",
+        transactionDate: new Date(),
+        recurringType: "",
+        recurringDate: "",
+      });
+    } catch (err) {
+      console.error("Error saving transaction", err);
+    }
+  };
 
   if (loading) return <p>Loading finances...</p>;
 
