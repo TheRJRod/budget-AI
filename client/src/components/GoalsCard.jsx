@@ -3,7 +3,7 @@ import { ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import API from "../api";
 
 const GoalCard = ({ goal, refreshGoals, index }) => {
-    const [contribution, setContribution] = useState(0);
+    const [contribution, setContribution] = useState(null);
 
     const progress =
     goal.targetAmount && goal.targetAmount > 0
@@ -43,6 +43,10 @@ if (!date || isNaN(date.getTime())) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(contribution === null || contribution == 0) {
+            alert("Must add value more than 0")
+            return;
+        }
         try {
             await API.patch(`/goals/${goal._id}/contribute`, { amount: contribution });
             refreshGoals(); // Let the parent refetch goals after updating
@@ -89,7 +93,7 @@ if (!date || isNaN(date.getTime())) {
                 <form onSubmit={handleSubmit}>
                     <button className="goal-quick-add ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border h-9 rounded-md px-3 bg-slate-700/50 border-slate-600 text-slate-200 hover:bg-slate-600/50 hover:text-white" type="button" onClick={() => handleQuickAdd(100)}>$100</button>
                     <button className="goal-quick-add ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border h-9 rounded-md px-3 bg-slate-700/50 border-slate-600 text-slate-200 hover:bg-slate-600/50 hover:text-white" type="button" onClick={() => handleQuickAdd(500)}>$500</button>
-                    <input className="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border h-9 rounded-md px-3 bg-slate-700/50 border-slate-600 text-slate-200 hover:bg-slate-600/50 hover:text-white" type="number" value={contribution} onChange={handleInputChange} />
+                    <input placeholder="$0" className="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border h-9 rounded-md px-3 bg-slate-700/50 border-slate-600 text-slate-200 hover:bg-slate-600/50 hover:text-white" type="number" value={contribution} onChange={handleInputChange} />
                     <button className="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-10 px-4 py-2  bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold shadow-lg shadow-cyan-500/25" type="submit">Submit</button>
                 </form>
             </div>

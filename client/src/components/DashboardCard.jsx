@@ -3,6 +3,9 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
 const DashboardCard = ({ heading, data, link, classes, icon }) => {
+  const formatted = new Intl.DateTimeFormat("en-US", { month: "long" }).format(new Date());
+  const now = new Date();
+
   const settings = {
     dots: false, // Optional: pagination dots
     infinite: true,
@@ -13,9 +16,29 @@ const DashboardCard = ({ heading, data, link, classes, icon }) => {
   };
 
   const renderedItems = data
-    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+    .filter((item) => {
+      const transactionDate = item.transactionDate;
+      const inputDate = new Date(transactionDate)
+      const isSameMonth = inputDate.getMonth() === now.getMonth() && inputDate.getFullYear() === now.getFullYear();
+      return (
+      item.recurringType === "monthly" || isSameMonth
+      )
+    })
+    .sort((a, b) => {
+    const getComparableDate = (item) => {
+      if (item.recurringType === "monthly" && item.recurrenceDetails?.dayOfMonth) {
+        return new Date(now.getFullYear(), now.getMonth(), item.recurrenceDetails.dayOfMonth);
+      }
+      return new Date(item.transactionDate || item.createdAt);
+    };
+
+    const dateA = getComparableDate(a);
+    const dateB = getComparableDate(b);
+
+    return dateA - dateB;
+  })
     .map((item) => {
-      const date = new Date(item.createdAt);
+      const date = item.recurringType === "monthly" ? new Date(now.getFullYear(),  now.getMonth(), item.recurrenceDetails.dayOfMonth) : new Date(item.transactionDate);
 
       const formatted = new Intl.DateTimeFormat("en-US", {
         day: "numeric",
@@ -39,14 +62,21 @@ const DashboardCard = ({ heading, data, link, classes, icon }) => {
       );
     });
 
-  const itemsTotal = data.reduce((acc, num) => {
+  const itemsTotal = data.filter((item) => {
+      const transactionDate = item.transactionDate;
+      const inputDate = new Date(transactionDate)
+      const isSameMonth = inputDate.getMonth() === now.getMonth() && inputDate.getFullYear() === now.getFullYear();
+      return (
+      item.recurringType === "monthly" || isSameMonth
+      )
+    }).reduce((acc, num) => {
     return acc + num?.total;
   }, 0);
 
   return (
     <>
       <a href={link} className={`dashboard-card ${classes}`}>
-        <h2 className="text-2xl font-bold flex items-center gap-[10px]">{icon} Monthly {heading}</h2>
+        <h2 className="text-2xl font-bold flex items-center gap-[10px]">{icon} {formatted} {heading}</h2>
         <p style={{ fontSize: 30, fontWeight: "bold" }}>${itemsTotal}</p>
         <div className="card-slider">
           {data.length > 1 ? (

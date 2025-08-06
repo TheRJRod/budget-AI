@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import API from '../api'
 import BudgetCard from "../components/BudgetCard";
 import { useFinances } from "../context/FinancesContext";
 

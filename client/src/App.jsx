@@ -8,6 +8,7 @@ import BudgetPage from "./pages/BudgetPage";
 import AiRecsPage from "./pages/AiRecsPage";
 import PrivateRoute from "./components/PrivateRoute";
 import PageWrapper from "./components/PageWrapper";
+import Onboarding from "./pages/Onboarding";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
       ? <Navigate to="/dashboard" /> 
       : <Navigate to="/auth" />
   } />
-
+  <Route path="/onboarding" element={<Onboarding/>} />
   {/* Private routes: Protect first, then wrap */}
   <Route element={<PrivateRoute />}>
     <Route element={<PageWrapper />}>
@@ -29,6 +30,7 @@ function App() {
       <Route path="/goals" element={<GoalsPage />} />
       <Route path="/budget" element={<BudgetPage />} />
       <Route path="/ai-finance" element={<AiRecsPage />} />
+      
     </Route>
   </Route>
 </Routes>

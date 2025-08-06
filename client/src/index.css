@@ -7,7 +7,7 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   font-family: "Inter", sans-serif;
 }
 
@@ -218,6 +218,31 @@ html {
   padding: 4px;
   background: white;
   color: black;
+}
+
+.recurring-container {
+  height:150px;
+  overflow: auto;
+}
+
+/* Target the scrollbar itself */
+.recurring-container::-webkit-scrollbar {
+  width: 8px;      /* Vertical scrollbar width */
+  height: 8px;     /* Horizontal scrollbar height */
+}
+
+/* The track (background) */
+.recurring-container::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border-radius: 10px;
+}
+
+/* The draggable thumb */
+.recurring-container::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(to right, #a855f7, #ec4899);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
 /* Goal Chart */
