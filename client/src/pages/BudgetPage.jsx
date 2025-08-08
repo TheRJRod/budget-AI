@@ -1,9 +1,21 @@
+import { useState } from "react";
 import BudgetCard from "../components/BudgetCard";
 import { useFinances } from "../context/FinancesContext";
+import { useBudget } from "../context/BudgetContext";
 
 const BudgetPage = () => {
     const {income, expenses} = useFinances()
-   
+    const {budget} = useBudget()
+    const [targetAmounts, setTargetAmounts] = useState({
+    "Entertainment": 1000,
+    "Food":1000,
+    "Healthcare":1000,
+    "Housing":1000,
+    "Savings":1000,
+    "Shopping":1000,
+    "Transportation":1000,
+    "Other":1000
+    })
 
     const totalsByCategory = expenses.reduce((acc, item) => {
         const category = item.category;
@@ -33,6 +45,12 @@ const BudgetPage = () => {
     const amountOver = Object.entries(totalsByCategory).reduce((acc, [_, total]) => {
         return total > 1000 ? acc + 1 : acc;
     }, 0);
+
+    const handleChange = (e, title) => {
+        setTargetAmounts((prev) => ({
+            ...prev, [title]: e.target.value
+        }))
+    }
     
 
     return (
@@ -59,11 +77,13 @@ const BudgetPage = () => {
                 <h2>Budget Breakdown</h2>
                 <p style={{marginBottom:24}}>Track your spending against your budget by category</p>
                 {Object.entries(totalsByCategory).map(([title, total]) => {
-                    const budgetGoal = {currentAmount:total, targetAmount: 1000, title:title}
+                    const titleFormatted = title.charAt(0).toUpperCase() + title.slice(1)
+                    const target = targetAmounts[titleFormatted]
+                    const budgetGoal = {currentAmount:total, targetAmount: target, title:titleFormatted}
                     
                    return (
                    <div className="budget-row" key={title}>
-                    <BudgetCard key={title} goal={budgetGoal}  />
+                    <BudgetCard key={title} goal={budgetGoal} handleChange={handleChange}  />
                    </div>
                    )
                 })}

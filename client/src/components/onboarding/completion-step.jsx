@@ -1,11 +1,13 @@
 import { useState } from "react"
 import { CheckCircle, TrendingUp, Target, DollarSign, Sparkles, ArrowRight } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { useFinances } from "../../context/FinancesContext";
 
 
 export function CompletionStep({ data, setupDashboard }) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false)
+  const {refreshFinances} = useFinances()
 
   const totalIncome = Object.values(data.income).reduce((sum, value) => sum + value, 0)
   const totalExpenses = Object.values(data.expenses).reduce((sum, value) => sum + value, 0)
@@ -16,6 +18,7 @@ export function CompletionStep({ data, setupDashboard }) {
   try {
     setIsLoading(true);
     await setupDashboard();  
+    await refreshFinances();
     navigate("/dashboard"); 
   } catch (error) {
     console.error("Failed to complete setup", error);

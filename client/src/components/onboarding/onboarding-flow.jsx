@@ -7,6 +7,7 @@ import { CompletionStep } from "./completion-step"
 import { TrendingUp, Sparkles } from "lucide-react"
 import { useFinances } from "../../context/FinancesContext"
 import { useGoals } from "../../context/GoalsContext"
+import { useBudget } from "../../context/BudgetContext"
 
 export function OnboardingFlow() {
   const [currentStep, setCurrentStep] = useState(0)
@@ -18,6 +19,7 @@ export function OnboardingFlow() {
 
   const { postFinance } = useFinances();
   const { postGoals } = useGoals();
+  const { postBudget } = useBudget();
 
   const steps = [
     { title: "Welcome", component: WelcomeStep },
@@ -26,6 +28,8 @@ export function OnboardingFlow() {
     { title: "Goals", component: GoalsStep },
     { title: "Complete", component: CompletionStep },
   ]
+
+  const budgetInit = ["Entertainment", "Food", "Healthcare", "Housing", "Savings", "Shopping", "Transportation", "Other"]
 
   const progress = ((currentStep + 1) / steps.length) * 100
 
@@ -51,7 +55,7 @@ export function OnboardingFlow() {
     const incomePromises = Object.entries(data.income).map(([key, value]) => {
       if (value > 0) {
         const newIncome = {
-          title: key.charAt(0).toUpperCase + key.slice(1),
+          title: key.charAt(0).toUpperCase() + key.slice(1),
           type: "income",
           total: value,
           category: key,
@@ -90,11 +94,23 @@ export function OnboardingFlow() {
       return postGoals(newGoal);
     });
 
+    const budgetPromises = budgetInit.map((init) => {
+      const newBudget = {
+        title: init,
+      targetAmount: 1000,
+      currentAmount:0
+      }
+      return postBudget(newBudget)
+    })
+
+    
+
     // Await all promises in parallel
     await Promise.all([
       ...incomePromises.filter(Boolean),
       ...expensePromises.filter(Boolean),
       ...goalPromises,
+      ...budgetPromises
     ]);
 
     console.log("Dashboard setup complete!");

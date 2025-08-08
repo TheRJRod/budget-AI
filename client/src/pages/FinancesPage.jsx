@@ -277,7 +277,19 @@ const RenderRecentTransactions = ({ transactions }) => (
     <div style={{ marginTop: 24 }} className="transactions-wrap">
       {transactions.map((item, index) => {
         let formatted = "";
-        if (item.transactionDate) {
+        if (item.recurringType == "monthly") {
+          const today = new Date();
+          const month = today.getMonth()
+          const year = today.getFullYear()
+          const day = item.recurrenceDetails.dayOfMonth
+          const customDate = new Date(year, month, day);
+          formatted = new Intl.DateTimeFormat("en-US", {
+            timeZone: "UTC",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          }).format(customDate);
+        } else if (item.transactionDate) {
           const date = new Date(item.transactionDate);
           formatted = new Intl.DateTimeFormat("en-US", {
             timeZone: "UTC",

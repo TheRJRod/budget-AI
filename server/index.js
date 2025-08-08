@@ -10,6 +10,7 @@ import goalRoutes from "./routes/goalRoutes.js";
 import spendRoutes from "./routes/spendingRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
 import weeklyGoals from "./routes/weeklyGoals.js";
+import budgetRoutes from "./routes/budgetRoutes.js"
 
 dotenv.config();
 const app = express();
@@ -30,6 +31,7 @@ app.use("/api/goals", goalRoutes);
 app.use("/api/spending", spendRoutes);
 app.use("/api", aiRoutes);
 app.use("/api/weekly-goals", weeklyGoals);
+app.use("/api/budget", budgetRoutes)
 
 mongoose
   .connect(process.env.MONGODB_URI)

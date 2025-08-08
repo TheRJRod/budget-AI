@@ -25,7 +25,7 @@ const UpcomingBills = () => {
           item.recurrenceDetails?.dayOfMonth
         );
         setBills(recurringBills);
-        console.log("Filtered recurring bills:", recurringBills); // Debug log
+
       } catch (error) {
         console.log("Error fetching bills:", error);
       } finally {
@@ -139,8 +139,8 @@ const UpcomingBills = () => {
         </div>
       ) : (
         <div className="text-center py-8 text-slate-400">
-          <p>No recurring bills set up yet.</p>
-          <p className="text-sm mt-2">Add some recurring expenses to see them here!</p>
+          <p className="text-white">No recurring bills set up yet.</p>
+          <p className="text-sm mt-2 text-white">Add some recurring expenses to see them here!</p>
         </div>
       )}
     </>

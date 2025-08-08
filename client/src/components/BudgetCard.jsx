@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { useState } from "react";
 
-const BudgetCard = ({ goal }) => {
+const BudgetCard = ({ goal, handleChange }) => {
   const progress = goal.currentAmount / goal.targetAmount;
   const percentage = Math.min(Math.round(progress * 100), 100);
   const difference = (goal.targetAmount - goal.currentAmount)
@@ -80,7 +80,7 @@ const BudgetCard = ({ goal }) => {
             style={{ marginTop: 10, marginBottom: 0 }}
             className="edit-container form-row"
           >
-            {editMode && <input type="number" style={{ padding: 7 }} />}
+            {editMode && <input onChange={(e) => handleChange(e, goal.title)} type="number" style={{ padding: 7 }} value={goal.targetAmount} />}
             <button
               onClick={toggleEdit}
               variant="outline"
