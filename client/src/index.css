@@ -11,6 +11,30 @@ html {
   font-family: "Inter", sans-serif;
 }
 
+/* Scrollbar track (background) */
+::-webkit-scrollbar {
+  width: 12px;              /* width of vertical scrollbar */
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+  background: #f0f0f0;      /* color behind the scrollbar */
+  border-radius: 10px;
+}
+
+/* Scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(to right, #8b5cf6, #ec4899);        /* scrollbar color */
+  border-radius: 10px;
+  border: 3px solid #f0f0f0; /* adds padding around the thumb */
+}
+
+/* Hover effect on the thumb */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
 .main-wrap {
   display: flex;
   flex-grow: 1;

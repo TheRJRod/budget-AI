@@ -403,10 +403,7 @@ const FinancesPage = () => {
       payload.recurrenceDetails = recurrenceDetails;
     }
 
-    // console.log("=== FRONTEND DEBUG ===");
-    // console.log("Form state:", form);
-    // console.log("Final payload being sent:", payload);
-    // console.log("Recurring date value:", form.recurringDate, "Type:", typeof form.recurringDate);
+
 
     try {
       await postFinance(endpoint, payload);

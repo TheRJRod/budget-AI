@@ -32,7 +32,7 @@ export const BudgetProvider = ({children}) => {
         }
     }
 
-    const patchBudget = async (id, target ) => {
+    const patchTarget = async (id, target ) => {
         try {
             const res = await API.patch(`/budget/${id}/target`, {targetAmount: target})
 
@@ -43,7 +43,7 @@ export const BudgetProvider = ({children}) => {
 
     return (
 
-    <BudgetContext.Provider value={{budget, setBudget, postBudget, patchBudget}}>
+    <BudgetContext.Provider value={{budget, setBudget, postBudget, patchTarget}}>
         {children}
     </BudgetContext.Provider>
     )

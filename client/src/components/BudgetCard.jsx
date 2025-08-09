@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { useState } from "react";
 
-const BudgetCard = ({ goal, handleChange }) => {
+const BudgetCard = ({ goal, handleChange, handleSubmit, targetAmounts }) => {
   const progress = goal.currentAmount / goal.targetAmount;
   const percentage = Math.min(Math.round(progress * 100), 100);
   const difference = (goal.targetAmount - goal.currentAmount)
@@ -76,20 +76,36 @@ const BudgetCard = ({ goal, handleChange }) => {
           <span className="text-slate-300" style={{ marginTop: 10 }}>
             {percentage}% used
           </span>
+          <form onSubmit={(e) => {e.preventDefault()} }>
           <div
             style={{ marginTop: 10, marginBottom: 0 }}
             className="edit-container form-row"
           >
             {editMode && <input onChange={(e) => handleChange(e, goal.title)} type="number" style={{ padding: 7 }} value={goal.targetAmount} />}
-            <button
-              onClick={toggleEdit}
+            {editMode ? ( <button
+              onClick={() => {
+              handleSubmit(goal._id, targetAmounts[goal.title]);
+              toggleEdit();
+            }}
+              type="submit"
               variant="outline"
               size="sm"
-              className="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border h-9 rounded-md px-3 bg-slate-700/50 border-slate-600 text-slate-400 hover:bg-blue-500/20 hover:border-blue-500/50 hover:text-blue-400"
+              className="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border h-9 rounded-md px-3 bg-slate-700/50 border-slate-600 text-slate-400 hover:bg-green-500/20 hover:border-green-500/50 hover:text-green-400"
             >
-              {editMode ? "Save target amount" : "Edit target amount"}
-            </button>
+               Save target amount
+            </button>) :
+            (<button type="button" 
+              className="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border h-9 rounded-md px-3 bg-slate-700/50 border-slate-600 text-slate-400 hover:bg-blue-500/20 hover:border-blue-500/50 hover:text-blue-400"
+              size="sm"
+              variant="outline"
+              onClick={toggleEdit}
+            >
+              Edit target amount
+              </button>
+              )
+            }
           </div>
+          </form>
         </div>
       </div>
     </div>

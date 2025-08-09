@@ -21,14 +21,14 @@ const postBudget = async (req, res) => {
     }
 }
 
-const patchBudget = async (req, res) => {
+const patchTarget = async (req, res) => {
     const {targetAmount} = req.body
     const {id} = req.params
 
     try {
-        const budgetItem = Budget.findOne({_id:id, user:req.user._id})
+        const budgetItem = await Budget.findOne({_id:id, user:req.user._id})
         if (!budgetItem) return res.status(404).json({message: "Budget Item not found"})
-        budgetItem.targetAmount += targetAmount;
+        budgetItem.targetAmount = targetAmount;
         
         const updatedItem = await budgetItem.save();
 
@@ -39,4 +39,22 @@ const patchBudget = async (req, res) => {
     }
 }
 
-export {getBudget, postBudget, patchBudget}
+const patchCurrent = async (req, res) => {
+    const {currentAmount} = req.body
+    const {id} = req.params
+
+    try {
+        const budgetItem = await Budget.findOne({_id:id, user:req.user._id})
+        if (!budgetItem) return res.status(404).json({message: "Budget Item not found"})
+        budgetItem.currentAmountAmount = currentAmount;
+        
+        const updatedItem = await budgetItem.save();
+
+        res.status(200).json(updatedItem)
+
+    } catch (error) {
+        console.log("Error editing budget item:", error)
+    }
+}
+
+export {getBudget, postBudget, patchTarget, patchCurrent}

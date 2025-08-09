@@ -1,21 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BudgetCard from "../components/BudgetCard";
 import { useFinances } from "../context/FinancesContext";
 import { useBudget } from "../context/BudgetContext";
 
 const BudgetPage = () => {
     const {income, expenses} = useFinances()
-    const {budget} = useBudget()
-    const [targetAmounts, setTargetAmounts] = useState({
-    "Entertainment": 1000,
-    "Food":1000,
-    "Healthcare":1000,
-    "Housing":1000,
-    "Savings":1000,
-    "Shopping":1000,
-    "Transportation":1000,
-    "Other":1000
-    })
+    const {budget, patchTarget} = useBudget()
+    const [targetAmounts, setTargetAmounts] = useState({})
+    useEffect(() => {
+    if (budget.length > 0) {
+        const amounts = {};
+        budget.forEach((item) => {
+        amounts[item.title] = item.targetAmount;
+        });
+        setTargetAmounts(amounts);
+    }
+    }, [budget]);
+
+
 
     const totalsByCategory = expenses.reduce((acc, item) => {
         const category = item.category;
@@ -51,6 +53,10 @@ const BudgetPage = () => {
             ...prev, [title]: e.target.value
         }))
     }
+
+    const handleSubmit = (id, target) => {
+        patchTarget(id, Number(target))
+    }
     
 
     return (
@@ -78,12 +84,13 @@ const BudgetPage = () => {
                 <p style={{marginBottom:24}}>Track your spending against your budget by category</p>
                 {Object.entries(totalsByCategory).map(([title, total]) => {
                     const titleFormatted = title.charAt(0).toUpperCase() + title.slice(1)
-                    const target = targetAmounts[titleFormatted]
-                    const budgetGoal = {currentAmount:total, targetAmount: target, title:titleFormatted}
+                    const target = targetAmounts[titleFormatted] || 0;
+                    const matchingBudgetItem = budget.find(b => b.title === titleFormatted);
+                    const budgetGoal = {currentAmount:total, targetAmount: target, title:titleFormatted, _id: matchingBudgetItem?._id, }
                     
                    return (
                    <div className="budget-row" key={title}>
-                    <BudgetCard key={title} goal={budgetGoal} handleChange={handleChange}  />
+                    <BudgetCard key={title} goal={budgetGoal} handleChange={handleChange} handleSubmit={handleSubmit} targetAmounts={targetAmounts}  />
                    </div>
                    )
                 })}
