@@ -8,6 +8,8 @@ const BudgetCard = ({ goal, handleChange, handleSubmit, targetAmounts }) => {
     .toString()
     .replace("-", "");
 
+ 
+
   const categoryColor = (catTitle) => {
     switch (catTitle) {
       case "Food":
@@ -20,9 +22,9 @@ const BudgetCard = ({ goal, handleChange, handleSubmit, targetAmounts }) => {
         return "bg-gradient-to-r from-pink-500 to-rose-500";
       case "Transportation":
         return "bg-gradient-to-r from-yellow-500 to-orange-500";
-      case "Subscriptions":
+      case "Shopping":
         return "bg-gradient-to-r from-red-500 to-red-600";
-      case "Bill":
+      case "Housing":
         return "bg-gradient-to-r from-red-500 to-red-600";
       case "undefined":
         return "bg-gradient-to-r from-red-500 to-red-600";

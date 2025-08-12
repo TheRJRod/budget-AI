@@ -31,8 +31,16 @@ export const FinancesProvider = ({children}) => {
    return API.post(endpoint, form)
   }
 
+  const deleteFinance = (endpoint) => {
+    return API.delete(endpoint)
+  }
+
+  const patchFinance = (endpoint, form) => {
+    return API.patch(endpoint, form)
+  }
+
     return (
-        <FinancesContext.Provider value={{income, expenses, setIncome, setExpenses, loading, refreshFinances: fetchFinances, postFinance}}>
+        <FinancesContext.Provider value={{income, expenses, setIncome, setExpenses, loading, refreshFinances: fetchFinances, postFinance, deleteFinance, patchFinance}}>
             {children}
         </FinancesContext.Provider>
     )

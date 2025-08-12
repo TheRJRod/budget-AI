@@ -50,4 +50,51 @@ const postExpenses = async (req, res) => {
   }
 };
 
-export { getExpenses, postExpenses };
+const deleteExpenses = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const expense = await Expenses.deleteOne({ _id: id, user: req.user._id });
+    
+    // Check if the document was actually deleted
+    if (expense.deletedCount === 0) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Expense not found or unauthorized' 
+      });
+    }
+    
+    res.status(200).json({ 
+      success: true, 
+      message: 'Expense deleted successfully',
+      deletedCount: expense.deletedCount 
+    });
+  } catch (error) {
+    console.log('Error deleting expense', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Internal server error' 
+    });
+  }
+}
+
+const patchExpenses = async (req, res) => {
+  const {title, total, recurringType, dayOfMonth} = req.body
+  const {id} = req.params
+  try {
+      const newExpense = await Expenses.findOne({_id:id, user:req.user._id})
+       if (!newExpense) return res.status(404).json({ message: "Expense not found" });
+      newExpense.title = title
+      newExpense.total = total
+      newExpense.recurringType = recurringType
+      newExpense.dayOfMonth = dayOfMonth
+
+       const updatedExpense = await newExpense.save();
+       res.status(200).json(updatedExpense)
+  } catch (error) {
+    console.log("Error editing expense", error)
+  }
+
+
+}
+
+export { getExpenses, postExpenses, deleteExpenses, patchExpenses };

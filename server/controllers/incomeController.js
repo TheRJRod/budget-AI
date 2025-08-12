@@ -24,4 +24,50 @@ const postIncome = async (req, res) => {
     })
 }
 
-export {getIncome, postIncome};
+const deleteIncome = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const income = await Income.deleteOne({ _id: id, user: req.user._id });
+    
+    // Check if the document was actually deleted
+    if (income.deletedCount === 0) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Income not found or unauthorized' 
+      });
+    }
+    
+    res.status(200).json({ 
+      success: true, 
+      message: 'Income deleted successfully',
+      deletedCount: income.deletedCount 
+    });
+  } catch (error) {
+    console.log('Error deleting income', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Internal server error' 
+    });
+  }
+}
+
+const patchIncome = async (req, res) => {
+  const {title, total, recurringType, dayOfMonth} = req.body
+  const {id} = req.params
+  try {
+      const newIncome = await Income.findOne({_id:id, user:req.user._id})
+       if (!newIncome) return res.status(404).json({ message: "Expense not found" });
+      newIncome.title = title
+      newIncome.total = total
+      newIncome.recurringType = recurringType
+      newIncome.dayOfMonth = dayOfMonth
+
+       const updatedIncome = await newIncome.save();
+       res.status(200).json(updatedIncome)
+  } catch (error) {
+    console.log("Error editing Income", error)
+  }
+
+}
+
+export {getIncome, postIncome, deleteIncome, patchIncome};

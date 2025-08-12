@@ -263,7 +263,10 @@ const RenderFinanceBreakdown = ({ income, expenses }) => {
   );
 };
 
-const RenderRecentTransactions = ({ transactions }) => (
+const RenderRecentTransactions = ({ transactions, handleClick, openModalIndex, modalForm, handleModalChanges, handleModalDelete, handleModalSubmit }) => (
+
+  
+
   <div
     style={{ marginTop: 24 }}
     className="inner-card shadow-2xs bg-slate-800/50 border-slate-700/50 backdrop-blur-xl"
@@ -276,6 +279,8 @@ const RenderRecentTransactions = ({ transactions }) => (
     </p>
     <div style={{ marginTop: 24 }} className="transactions-wrap">
       {transactions.map((item, index) => {
+        const deleteEndpoint = item.type == "income" ? `/income/${item._id}/remove` : `/expenses/${item._id}/remove`
+        const patchEndpoint = item.type == "income" ? `/income/${item._id}/edit` : `/expenses/${item._id}/edit`
         let formatted = "";
         if (item.recurringType == "monthly") {
           const today = new Date();
@@ -299,13 +304,46 @@ const RenderRecentTransactions = ({ transactions }) => (
           }).format(date);
         }
         return (
+          <>
+          {openModalIndex == index && <div className="transaction-modal">
+              
+              <form onSubmit={() => handleModalSubmit(patchEndpoint, {...modalForm, ["title"]:modalForm.title.toLowerCase()})} className="bg-slate-800 border-slate-700 ">
+                <div onClick={() => handleClick(null)} className="close-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path fill="#ffffff" d="M504.6 148.5C515.9 134.9 514.1 114.7 500.5 103.4C486.9 92.1 466.7 93.9 455.4 107.5L320 270L184.6 107.5C173.3 93.9 153.1 92.1 139.5 103.4C125.9 114.7 124.1 134.9 135.4 148.5L278.3 320L135.4 491.5C124.1 505.1 125.9 525.3 139.5 536.6C153.1 547.9 173.3 546.1 184.6 532.5L320 370L455.4 532.5C466.7 546.1 486.9 547.9 500.5 536.6C514.1 525.3 515.9 505.1 504.6 491.5L361.7 320L504.6 148.5z"/></svg></div>
+                <h2 style={{fontWeight:"bold", fontSize:24, marginBottom:20}}>Edit your transaction</h2>
+                <div className="form-row"><label> {item.type == "income" ? "Income title" : "Expense Title"} <input value={modalForm.title} onChange={(e) => handleModalChanges("title", e.target.value)} /></label></div>
+               <div className="form-row"> <label>{item.type == "income" ? "Income Total" : "Expense Total"} <input value={modalForm.total} onChange={(e) => handleModalChanges("total", e.target.value)} /></label></div>
+               {item.isRecurring ? (
+                <>
+                <div className="form-row">
+                <label>Recurring Type
+                  <select value={modalForm.recurringType} onChange={(e) => handleModalChanges("recurringType", e.target.value)}>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                  </select>
+                </label>
+               </div>
+              <div className="form-row">
+                 <label>Recurring Date <input value={modalForm.dayOfMonth} onChange={(e) => handleModalChanges("dayOfMonth", e.target.value)}/></label>
+              </div>
+              </>
+              ) : ""}
+               <div className="form-row">
+                <button className="bg-green-500">Save Changes</button>
+                <button className="bg-red-500" onClick={() => handleModalDelete(deleteEndpoint)}>Delete</button>
+                </div>
+              </form>
+              
+            </div> }
           <div
             key={index}
             className="inner-card-transaction bg-slate-700/30 hover:bg-slate-700/50 transition-colors duration-200"
+            onClick={() => handleClick(index)}
           >
+            
             <div className="left-inner">
               <span style={{ fontWeight: "bold", color: "white" }}>
-                {item.title}
+                {item.title.charAt(0).toUpperCase() + item.title.slice(1)}
               </span>
               <span className="text-slate-400">{formatted}</span>
             </div>
@@ -320,6 +358,7 @@ const RenderRecentTransactions = ({ transactions }) => (
               </span>
             </div>
           </div>
+          </>
         );
       })}
     </div>
@@ -329,7 +368,7 @@ const RenderRecentTransactions = ({ transactions }) => (
 /* ----- Main Component ----- */
 
 const FinancesPage = () => {
-  const { income, expenses, refreshFinances, loading, postFinance } =
+  const { income, expenses, refreshFinances, loading, postFinance, deleteFinance , patchFinance } =
     useFinances();
   const [form, setForm] = useState({
     type: "expense",
@@ -341,6 +380,50 @@ const FinancesPage = () => {
     title: "",
     transactionDate: new Date(),
   });
+
+  const [modalForm, setModalForm] = useState({
+    title:"",
+    total:"",
+    recurringType:"",
+    dayOfMonth:""
+  })
+
+  
+
+ 
+   const [openModalIndex, setOpenModalIndex] = useState(null);
+   const handleClick = (index) => {
+    if(index !== null) {
+      const item = transactions[index];
+      setModalForm({
+        title: item.title,
+        total: item.total,
+        recurringType: item.recurringType || "",
+        dayOfMonth: item.recurrenceDetails?.dayOfMonth || ""
+      })
+    }
+    setOpenModalIndex((prev) => prev = index )
+   }
+
+   const handleModalChanges = (field, value) => {
+    setModalForm(prev => ({
+      ...prev, [field]: value
+    }))
+   }
+
+
+   const handleModalDelete = async (endpoint) => {
+    await deleteFinance(endpoint)
+    setOpenModalIndex((prev) => prev = null)
+    await refreshFinances()
+   }
+
+   const handleModalSubmit = async (endpoint, form) => {
+    await patchFinance(endpoint, form)
+    setOpenModalIndex((prev) => prev = null)
+    await refreshFinances()
+   }
+  
 
   const transactions = [
     ...income.map((item) => ({ ...item, type: "income" })),
@@ -382,6 +465,7 @@ const FinancesPage = () => {
     const payload = {
       ...form,
       transactionDate: form.transactionDate.toISOString().split("T")[0],
+      category: form.category.toLowerCase()
     };
 
     // Build recurrenceDetails based on type
@@ -434,11 +518,10 @@ const FinancesPage = () => {
           form={form}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
-          handleDateChange={handleDateChange}
         />
         <RenderFinanceBreakdown income={income} expenses={expenses} />
       </div>
-      <RenderRecentTransactions transactions={transactions} />
+      <RenderRecentTransactions transactions={transactions} handleClick={handleClick} openModalIndex={openModalIndex} handleModalChanges={handleModalChanges} modalForm={modalForm} handleModalDelete={handleModalDelete} handleModalSubmit={handleModalSubmit}  />
     </div>
   );
 };
