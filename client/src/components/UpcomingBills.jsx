@@ -72,7 +72,7 @@ const UpcomingBills = () => {
         >
           <div>
             <div className="font-semibold text-white">
-              {item?.title}
+              {item?.title.charAt(0).toUpperCase() + item?.title.slice(1)}
             </div>
             <div className="text-sm text-slate-300">{formatted}</div>
             {dayOfMonth !== actualDay && (

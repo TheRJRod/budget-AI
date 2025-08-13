@@ -78,22 +78,31 @@ const deleteExpenses = async (req, res) => {
 }
 
 const patchExpenses = async (req, res) => {
-  const {title, total, recurringType, dayOfMonth} = req.body
+  const {title, total, recurringType, recurrenceDetails } = req.body
   const {id} = req.params
+
+  
+
   try {
       const newExpense = await Expenses.findOne({_id:id, user:req.user._id})
        if (!newExpense) return res.status(404).json({ message: "Expense not found" });
       newExpense.title = title
       newExpense.total = total
       newExpense.recurringType = recurringType
-      newExpense.dayOfMonth = dayOfMonth
+       if (recurrenceDetails) {
+      newExpense.recurrenceDetails = {
+        ...newExpense.recurrenceDetails,
+        ...recurrenceDetails
+      };
+    }
+
+    
 
        const updatedExpense = await newExpense.save();
        res.status(200).json(updatedExpense)
   } catch (error) {
     console.log("Error editing expense", error)
   }
-
 
 }
 

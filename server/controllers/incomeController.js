@@ -52,7 +52,7 @@ const deleteIncome = async (req, res) => {
 }
 
 const patchIncome = async (req, res) => {
-  const {title, total, recurringType, dayOfMonth} = req.body
+  const {title, total, recurringType, recurrenceDetails} = req.body
   const {id} = req.params
   try {
       const newIncome = await Income.findOne({_id:id, user:req.user._id})
@@ -60,7 +60,12 @@ const patchIncome = async (req, res) => {
       newIncome.title = title
       newIncome.total = total
       newIncome.recurringType = recurringType
-      newIncome.dayOfMonth = dayOfMonth
+      if (recurrenceDetails) {
+      newIncome.recurrenceDetails = {
+        ...newIncome.recurrenceDetails,
+        ...recurrenceDetails
+      };
+    }
 
        const updatedIncome = await newIncome.save();
        res.status(200).json(updatedIncome)
