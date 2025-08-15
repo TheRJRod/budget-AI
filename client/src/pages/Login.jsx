@@ -30,7 +30,7 @@ export default function Login() {
       <input name="password" type="password" onChange={handleChange} placeholder="Password" />
       </div>
       <button className='w-full flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-300 bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25' type="submit">Login</button>
-      {error && <p>{error}</p>}
+      {error && <p style={{color:'red', marginTop:20, fontStyle:'italic', textAlign:'center', fontWeight:'bold'}}>{error}</p>}
     </form>
   );
 }

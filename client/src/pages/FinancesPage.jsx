@@ -171,7 +171,7 @@ const RenderFinanceForm = ({
                 ? "Day of Week (0 = Sun)"
                 : form.recurringType === "monthly"
                 ? "Day of Month (1–31)"
-                : "Julian Day (1–366)"}
+                : "Day of Year (1–365)"}
               <input
                 type="number"
                 name="recurringDate"

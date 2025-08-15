@@ -16,10 +16,20 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.name || !form.email || !form.password) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (form.password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
     try {
       const res = await API.post("/auth/register", form);
       localStorage.setItem("token", res.data.token);
-      navigate("/dashboard");
+      navigate("/onboarding");
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong");
     }
@@ -31,7 +41,7 @@ const Register = () => {
         <input name="name" onChange={handleChange} placeholder="Name" />
       </div>
       <div className="form-row">
-        <input name="email" onChange={handleChange} placeholder="Email" />
+        <input name="email" onChange={handleChange} placeholder="Email" type="email" />
       </div>
       <div className="form-row">
         <input
@@ -47,7 +57,7 @@ const Register = () => {
       >
         Register
       </button>
-      {error && <p>{error}</p>}
+      {error && <p style={{color:'red', marginTop:20, fontStyle:'italic', textAlign:'center', fontWeight:'bold'}}>{error}</p>}
     </form>
   );
 };

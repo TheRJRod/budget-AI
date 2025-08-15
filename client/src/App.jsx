@@ -9,21 +9,24 @@ import AiRecsPage from "./pages/AiRecsPage";
 import PrivateRoute from "./components/PrivateRoute";
 import PageWrapper from "./components/PageWrapper";
 import Onboarding from "./pages/Onboarding";
+import Landing from "./pages/LandingPage";
 
 function App() {
   return (
     <Router>
      <Routes>
   {/* Public routes */}
+  <Route path="/landing" element={<Landing />} />
   <Route path="/auth" element={<AuthPage />} />
   <Route path="/" element={
     localStorage.getItem("token") 
       ? <Navigate to="/dashboard" /> 
       : <Navigate to="/auth" />
   } />
-  <Route path="/onboarding" element={<Onboarding/>} />
+  
   {/* Private routes: Protect first, then wrap */}
   <Route element={<PrivateRoute />}>
+  <Route path="/onboarding" element={<Onboarding/>} />
     <Route element={<PageWrapper />}>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/finances" element={<FinancesPage />} />

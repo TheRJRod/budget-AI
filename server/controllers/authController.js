@@ -23,6 +23,7 @@ export const registerUser = async (req, res) => {
             token: generateToken(user._id)
         });
     } catch (err) {
+        console.error(err);
         res.status(500).json({message: "Server error", error: err.message})
     }
 }
@@ -32,7 +33,7 @@ export const loginUser = async (req, res) => {
 
     try {
         const user = await User.findOne({email});
-        if(user && user.matchPassword(password)) {
+        if(user && await user.matchPassword(password)) {
             res.json({
                 _id: user.id,
                 name: user.name,

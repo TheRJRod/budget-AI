@@ -86,7 +86,7 @@ const WeeklyGoals = () => {
           <button
             onClick={handleGenerateGoals}
             disabled={generating}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="ring-offset-background focus-visible:outline-hidden focus-visible:ring-ring inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-10 px-4 py-2 w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold shadow-lg shadow-cyan-500/25"
           >
             {generating ? "Generating..." : "Generate Weekly Goals"}
           </button>
